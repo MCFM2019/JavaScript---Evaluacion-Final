@@ -137,7 +137,7 @@ var Calculadora={
   guardaValoresDeOperacion:function(numAnterior,numPantalla,teclaPresionada){
     numAnterior=numPantalla.innerHTML;
     operacion=teclaPresionada;
-    numPantalla.innerHTML='';    
+    numPantalla.innerHTML='';
   }
 }
 
