@@ -94,10 +94,8 @@ var Calculadora={
           Calculadora.teclaPrevia='';
           break;
         case 'igual':
-          console.log('tecla antes:'+Calculadora.teclaPrevia);
           Calculadora.CalculaResultadoDeLaOperacion(numPantalla);
           Calculadora.teclaPrevia=teclaPresionada;
-          console.log('tecla desupes:'+Calculadora.teclaPrevia);
           break;
         case 'punto':
           Calculadora.AgregarPuntoAlNumeroEnPantalla(numPantalla);
@@ -164,14 +162,14 @@ var Calculadora={
     numPantalla.innerHTML='';
   },
   AgregarPuntoAlNumeroEnPantalla:function(numPantalla){
-    //El numero no tiene punto
-    if ((numPantalla.innerHTML.indexOf('.')<0) && (numPantalla.innerHTML!='')){
+    //El numero no tiene punto y es menor a 8 dígitos
+    if ((numPantalla.innerHTML.indexOf('.')<0) && (numPantalla.innerHTML!='')
+         && (numPantalla.innerHTML.length<8)){
       numPantalla.innerHTML+='.';
     }
   },
   CalculaResultadoDeLaOperacion:function(numPantalla){
     if (numPantalla.innerHTML!='0'){
-      console.log('Dentro:'+Calculadora.teclaPrevia);
       var numAntesDelResultado=numPantalla.innerHTML;
       var numOperacionFinal;
 
@@ -185,54 +183,55 @@ var Calculadora={
     }
   },
   devuelveResultadoDeOperacion:function(numPantalla){
-    var numOper;
+    var numOper,resultado;
     switch(Calculadora.operacion){
       case 'dividido':
         if (Calculadora.operacion!='' && Calculadora.numAnterior!=''){
           if (numPantalla.innerHTML!=''){
             numOper=parseFloat(Calculadora.numAnterior)/parseFloat(numPantalla.innerHTML);
-            this.validaNumeroAOchoDigitos(numOper);
+            console.log(numOper);
+            resultado=this.validaNumeroAOchoDigitos(numOper);
           }
           else{
-            numOper=Calculadora.numAnterior;
+            resultado=Calculadora.numAnterior;
           }
-          return numOper;
+          return resultado;
         }
         break;
       case 'por':
         if (Calculadora.operacion!='' && Calculadora.numAnterior!=''){
           if (numPantalla.innerHTML!=''){
             numOper=parseFloat(Calculadora.numAnterior)*parseFloat(numPantalla.innerHTML);
-            this.validaNumeroAOchoDigitos(numOper);
+            resultado=this.validaNumeroAOchoDigitos(numOper);
           }
           else{
-            numOper=Calculadora.numAnterior='';;
+            resultado=Calculadora.numAnterior='';;
           }
-          return numOper;
+          return resultado;
         }
         break;
       case 'menos':
         if (Calculadora.operacion!='' && Calculadora.numAnterior!=''){
           if (numPantalla.innerHTML!=''){
             numOper=parseFloat(Calculadora.numAnterior)-parseFloat(numPantalla.innerHTML);
-            this.validaNumeroAOchoDigitos(numOper);
+            resultado=this.validaNumeroAOchoDigitos(numOper);
           }
           else{
-            numOper=Calculadora.numAnterior;
+            resultado=Calculadora.numAnterior;
           }
-          return numOper;
+          return resultado;
         }
         break;
       case 'mas':
       if (Calculadora.operacion!='' && Calculadora.numAnterior!=''){
           if (numPantalla.innerHTML!=''){
             numOper=parseFloat(Calculadora.numAnterior)+parseFloat(numPantalla.innerHTML);
-            this.validaNumeroAOchoDigitos(numOper);
+            resultado=this.validaNumeroAOchoDigitos(numOper);
           }
           else{
-            numOper=Calculadora.numAnterior;
+            resultado=Calculadora.numAnterior;
           }
-          return numOper;
+          return resultado;
         }
         break;
       default:
@@ -240,9 +239,12 @@ var Calculadora={
     }
   },
   validaNumeroAOchoDigitos:function(numOper){
-    if (numOper.length>=8){
-      console.log('Se excedio el numero de digitos')
+    var numCadena=numOper.toString();
+    if (numCadena.length>=8){
+      // Se corta la cadena y se deja en 8 dígitos
+      numCadena=numCadena.substring(0,8);
     }
+    return numCadena;
   }
 }
 
